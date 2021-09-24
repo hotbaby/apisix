@@ -443,6 +443,8 @@ function _M.http_access_phase()
         up_id = api_ctx.upstream_id
     end
 
+    -- debug upstream id
+    core.log.info('route upstream id: ', up_id)
     if up_id then
         local upstream = get_upstream_by_id(up_id)
         api_ctx.matched_upstream = upstream
@@ -480,12 +482,14 @@ function _M.http_access_phase()
         api_ctx.upstream_scheme = "grpc"
     end
 
+    -- set upstream
     local code, err = set_upstream(route, api_ctx)
     if code then
         core.log.error("failed to set upstream: ", err)
         core.response.exit(code)
     end
 
+    -- load balancer pick server
     local server, err = load_balancer.pick_server(route, api_ctx)
     if not server then
         core.log.error("failed to pick server: ", err)
