@@ -112,6 +112,7 @@ function _M.http_init_worker()
 
     require("apisix.timers").init_worker()
 
+    -- call router http_init_worker 初始化router.route_http对象
     plugin.init_worker()
     router.http_init_worker()
     require("apisix.http.service").init_worker()

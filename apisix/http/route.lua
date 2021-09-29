@@ -35,9 +35,10 @@ function _M.create_radixtree_uri_router(routes, uri_routes, with_parameter)
     core.table.clear(uri_routes)
 
     for _, route in ipairs(routes) do
+        core.log.info('@@route: ', core.json.encode(route))
         if type(route) == "table" then
             local status = core.table.try_read_attr(route, "value", "status")
-            -- check the status
+            -- check the status, status == 0为下线状态，status == 1为上线状态
             if status and status == 0 then
                 goto CONTINUE
             end

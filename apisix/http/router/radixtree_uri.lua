@@ -28,6 +28,11 @@ local _M = {version = 0.2}
     local match_opts = {}
 function _M.match(api_ctx)
     local user_routes = _M.user_routes
+    core.log.info('@@user_routes: ',  core.json.delay_encode(user_routes))
+    core.log.info('@@user_routes.conf_version: ', user_routes.conf_version)
+    core.log.info('@@user_routes.values: ', core.json.encode(user_routes.values))
+    core.log.info('@@uri_routes: ', core.json.encode(uri_routes))
+
     if not cached_version or cached_version ~= user_routes.conf_version then
         uri_router = base_router.create_radixtree_uri_router(user_routes.values,
                                                              uri_routes, false)
