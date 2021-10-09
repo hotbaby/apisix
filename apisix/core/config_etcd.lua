@@ -283,6 +283,8 @@ local function sync_data(self)
         return nil, "missing 'key' arguments"
     end
 
+    log.info('@@etcd sync data, key: ', self.key)
+
     if self.need_reload then
         local res, err = readdir(self.etcd_cli, self.key)
         if not res then
@@ -290,8 +292,7 @@ local function sync_data(self)
         end
 
         local dir_res, headers = res.body.node or {}, res.headers
-        log.debug("readdir key: ", self.key, " res: ",
-                  json.delay_encode(dir_res))
+        log.debug("readdir key: ", self.key, " res: ", json.delay_encode(dir_res))
         if not dir_res then
             return false, err
         end
@@ -528,6 +529,8 @@ local function _automatic_fetch(premature, self)
     if premature then
         return
     end
+
+    log.info('@@etcd automatic fetch key: ', self.key)
 
     local i = 0
     while not exiting() and self.running and i <= 32 do
